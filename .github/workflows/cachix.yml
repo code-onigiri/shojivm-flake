@@ -3,12 +3,8 @@ name: "Cachix — build & cache"
 on:
   push:
     branches: [main]
-    paths:
-      - "flake.lock"
-      - "*.nix"
   pull_request:
-    paths:
-      - "*.nix"
+    branches: [main]
 
 jobs:
   push:
