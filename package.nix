@@ -31,7 +31,7 @@ let
     owner = "bea4dev";
     repo = "ShojiWM";
     rev = "main";
-    sha256 = "sha256-PHBjVf5CScm902djPKbq/VjYVgiK7tnPm5xB7+0/wlY=";
+    sha256 = "sha256-US5Qn6X5GF2m7ITDw4gOZ223oRmek4+s4wNjNWcrfLQ=";
   };
 in
 
