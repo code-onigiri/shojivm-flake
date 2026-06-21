@@ -12,8 +12,6 @@ env:
 jobs:
   push:
     runs-on: ubuntu-latest
-    env:
-      CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"
     steps:
       - uses: actions/checkout@v4
 
@@ -22,6 +20,15 @@ jobs:
       - uses: cachix/cachix-action@v17
         with:
           name: shojivm
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          skipPush: true  # Disable post-step push (post-step can't access secrets)
 
-      - name: Build shojiwm
-        run: nix build ".#packages.x86_64-linux.shojiwm"
+      - name: Build & push to Cachix
+        run: |
+          # Start watch-store push in background, then build
+          # This pushes any new store paths built by nix
+          cachix push shojivm --watch-store --watch-store-timeout 5 &
+          nix build ".#packages.x86_64-linux.shojiwm"
+          wait
+        env:
+          CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"
